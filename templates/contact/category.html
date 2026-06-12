@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Categories | MyContact</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <style>
+
+        body{
+            background:#eef2ff;
+        }
+
+        .navbar-custom{
+            background:#2563eb;
+        }
+
+        .main-card{
+            border:none;
+            border-radius:18px;
+        }
+
+        .category-card{
+            border:none;
+            border-radius:12px;
+            transition:.3s;
+        }
+
+        .category-card:hover{
+            transform:translateY(-2px);
+            box-shadow:0 8px 20px rgba(0,0,0,.08);
+        }
+
+        .form-control{
+            border-radius:10px;
+        }
+
+        .btn{
+            border-radius:10px;
+        }
+
+        .page-title{
+            font-weight:700;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<!-- Navbar -->
+
+<nav class="navbar navbar-expand-lg navbar-dark navbar-custom shadow">
+
+    <div class="container">
+
+        <a class="navbar-brand fw-bold" href="/contact/">
+            📒 MyContact
+        </a>
+
+        <div class="d-flex gap-2">
+
+            <a href="/contact/" class="btn btn-light btn-sm">
+                Dashboard
+            </a>
+
+        </div>
+
+    </div>
+
+</nav>
+
+<div class="container mt-5">
+
+    <!-- Add Category -->
+
+    <div class="card shadow main-card mb-4">
+
+        <div class="card-body">
+
+            <h2 class="page-title mb-4">
+                <i class="bi bi-folder-fill text-primary"></i>
+                Manage Categories
+            </h2>
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <div class="input-group">
+
+                    <input
+                        type="text"
+                        name="category_name"
+                        class="form-control"
+                        placeholder="Enter category name"
+                        required
+                    >
+
+                    <button class="btn btn-primary">
+                        Add Category
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <!-- Category List -->
+
+    <div class="card shadow main-card">
+
+        <div class="card-body">
+
+            <div class="d-flex align-items-center justify-content-between mb-4">
+
+                <h3 class="mb-0">
+                    <i class="bi bi-tags-fill text-warning"></i>
+                    Your Categories
+                </h3>
+
+                <span class="badge bg-primary fs-6">
+                    {{ categories|length }}
+                </span>
+
+            </div>
+
+            {% for category in categories %}
+
+            <div class="card category-card shadow-sm mb-3">
+
+                <div class="card-body d-flex justify-content-between align-items-center">
+
+                    <div>
+
+                        <i class="bi bi-folder-fill text-warning"></i>
+
+                       
+                         <a href="{% url 'category_contacts' category.id %}"
+   class="text-decoration-none text-dark fw-bold">
+    {{ category.name }}
+</a>
+
+                    </div>
+
+                    <a href="{% url 'delete_category' category.id %}"
+                       class="btn btn-outline-danger btn-sm"
+                       onclick="return confirm('Delete this category?')">
+
+                        <i class="bi bi-trash"></i>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+            {% empty %}
+
+            <div class="alert alert-info text-center">
+
+                <i class="bi bi-info-circle"></i>
+
+                No categories created yet.
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
